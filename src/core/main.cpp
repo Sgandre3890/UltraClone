@@ -5,9 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <src/render/shader.h>
-#include <src/core/camera.h>
-#include <src/render/model.h>
+#include <render/shader.h>
+#include <core/camera.h>
+#include <render/model.h>
 
 #include <iostream>
 
