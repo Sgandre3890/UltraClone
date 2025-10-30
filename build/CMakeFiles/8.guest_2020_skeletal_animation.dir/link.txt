@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\8.guest_2020_skeletal_animation.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\8.guest_2020_skeletal_animation.dir/objects.a @CMakeFiles\8.guest_2020_skeletal_animation.dir\objects1.rsp
+C:\msys64\ucrt64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\8.guest_2020_skeletal_animation.dir/objects.a -Wl,--no-whole-archive -o C:\Users\sgand\OneDrive\Documents\GitHub\LearnOpenGL-master\LearnOpenGL-master\bin\8.guest\2020\skeletal_animation\8.guest_2020_skeletal_animation.exe -Wl,--out-implib,lib8.guest_2020_skeletal_animation.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\8.guest_2020_skeletal_animation.dir\linkLibs.rsp
