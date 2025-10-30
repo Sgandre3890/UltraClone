@@ -5,7 +5,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <src/core/filesystem.h>
 #include <src/render/shader.h>
 #include <src/core/camera.h>
 #include <src/render/model.h>
@@ -78,11 +77,11 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader ourShader("Default.vs", "Default.fs");
+    Shader ourShader("render/shaders/Default.vs", "render/shaders/Default.fs");
 
     // load models
     // -----------
-    Model ourModel(FileSystem::getPath("assets/objects/backpack/backpack.obj"));
+    Model ourModel("assets/objects/backpack/backpack.obj");
 
     
     // draw in wireframe
