@@ -1,1 +1,0 @@
-  -L"C:/Users/sgand/OneDrive/Documents/GitHub/LearnOpenGL-master/LearnOpenGL-master/lib"  -lglfw3 -lopengl32 -lassimp -lfreetype -lirrKlang libSTB_IMAGE.a libGLAD.a -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

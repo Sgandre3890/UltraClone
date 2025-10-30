@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\2.lighting__4.2.lighting_maps_specular_map.dir/objects.a
-C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\2.lighting__4.2.lighting_maps_specular_map.dir/objects.a @CMakeFiles\2.lighting__4.2.lighting_maps_specular_map.dir\objects1.rsp
-C:\msys64\ucrt64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\2.lighting__4.2.lighting_maps_specular_map.dir/objects.a -Wl,--no-whole-archive -o C:\Users\sgand\OneDrive\Documents\GitHub\LearnOpenGL-master\LearnOpenGL-master\bin\2.lighting\2.lighting__4.2.lighting_maps_specular_map.exe -Wl,--out-implib,lib2.lighting__4.2.lighting_maps_specular_map.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\2.lighting__4.2.lighting_maps_specular_map.dir\linkLibs.rsp

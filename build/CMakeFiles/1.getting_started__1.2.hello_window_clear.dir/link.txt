@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\1.getting_started__1.2.hello_window_clear.dir/objects.a
-C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\1.getting_started__1.2.hello_window_clear.dir/objects.a @CMakeFiles\1.getting_started__1.2.hello_window_clear.dir\objects1.rsp
-C:\msys64\ucrt64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\1.getting_started__1.2.hello_window_clear.dir/objects.a -Wl,--no-whole-archive -o C:\Users\sgand\OneDrive\Documents\GitHub\LearnOpenGL-master\LearnOpenGL-master\bin\1.getting_started\1.getting_started__1.2.hello_window_clear.exe -Wl,--out-implib,lib1.getting_started__1.2.hello_window_clear.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\1.getting_started__1.2.hello_window_clear.dir\linkLibs.rsp
