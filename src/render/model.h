@@ -59,7 +59,11 @@ private:
             return;
         }
         // retrieve the directory path of the filepath
-        directory = path.substr(0, path.find_last_of('/'));
+        // find last slash of either type
+size_t slashIndex = path.find_last_of("/\\");
+directory = (slashIndex == string::npos) ? "." : path.substr(0, slashIndex);
+
+        //directory = path.substr(0, path.find_last_of('\\'));
 
         // process ASSIMP's root node recursively
         processNode(scene->mRootNode, scene);
@@ -177,23 +181,34 @@ private:
         {
             aiString str;
             mat->GetTexture(type, i, &str);
+            // If texture path is blank or only an extension, skip it
+            if (!str.length || str.C_Str()[0] == '\0' || string(str.C_Str()) == ".png")
+                continue;
+
             // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
             bool skip = false;
-            for(unsigned int j = 0; j < textures_loaded.size(); j++)
-            {
-                if(std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-                {
-                    textures.push_back(textures_loaded[j]);
-                    skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-                    break;
-                }
-            }
+            // build and normalize texture path once
+string texPath = str.C_Str();
+for (char &c : texPath) if (c == '\\') c = '/';
+if (texPath.rfind("./", 0) == 0) texPath = texPath.substr(2);
+
+for (unsigned int j = 0; j < textures_loaded.size(); j++)
+{
+    if (textures_loaded[j].path == texPath)
+    {
+        textures.push_back(textures_loaded[j]);
+        skip = true;
+        break;
+    }
+}
+
             if(!skip)
             {   // if texture hasn't been loaded already, load it
                 Texture texture;
                 texture.id = TextureFromFile(str.C_Str(), this->directory);
                 texture.type = typeName;
-                texture.path = str.C_Str();
+                texture.path = texPath;
+
                 textures.push_back(texture);
                 textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
             }
@@ -205,15 +220,29 @@ private:
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
 {
-    string filename = string(path);
-    filename = directory + '/' + filename;
+    if (!path || strlen(path) == 0)
+{
+    std::cout << "Skipping empty texture path\n";
+    return 0;
+}
+
+    string filename = path;
+
+    // if path already contains a slash, don't prepend directory
+    if (filename.find('/') == string::npos && filename.find('\\') == string::npos)
+        filename = directory + "/" + filename;
+
+    // normalize slashes so stb can read the path
+    for (char &c : filename)
+        if (c == '\\') c = '/';
 
     unsigned int textureID;
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
     unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-    if (data)
+
+        if (data)
     {
         GLenum format;
         if (nrComponents == 1)
@@ -236,10 +265,13 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
     }
     else
     {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
+        std::cout << "Texture failed to load at path: " << filename << std::endl;
         stbi_image_free(data);
     }
 
     return textureID;
 }
-#endif
+#endif // MODEL_H
+
+
+
