@@ -77,11 +77,11 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader ourShader("render/shaders/Default.vs", "render/shaders/Default.fs");
+    Shader ourShader("../src/render/shaders/Default.vs","../src/render/shaders/Default.fs");
 
     // load models
     // -----------
-    Model ourModel("assets/objects/backpack/backpack.obj");
+    Model ourModel("../assets/objects/planet/planet.obj");
 
     
     // draw in wireframe

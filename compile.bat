@@ -1,4 +1,6 @@
 cd build
 cmake --build .
-cd ../bin
+cd ..
+cd bin
 out.exe
+cd ..
