@@ -175,46 +175,57 @@ directory = (slashIndex == string::npos) ? "." : path.substr(0, slashIndex);
     // checks all material textures of a given type and loads the textures if they're not loaded yet.
     // the required info is returned as a Texture struct.
     vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
-    {
-        vector<Texture> textures;
-        for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-        {
-            aiString str;
-            mat->GetTexture(type, i, &str);
-            // If texture path is blank or only an extension, skip it
-            if (!str.length || str.C_Str()[0] == '\0' || string(str.C_Str()) == ".png")
-                continue;
-
-            // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-            bool skip = false;
-            // build and normalize texture path once
-string texPath = str.C_Str();
-for (char &c : texPath) if (c == '\\') c = '/';
-if (texPath.rfind("./", 0) == 0) texPath = texPath.substr(2);
-
-for (unsigned int j = 0; j < textures_loaded.size(); j++)
 {
-    if (textures_loaded[j].path == texPath)
+    vector<Texture> textures;
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
-        textures.push_back(textures_loaded[j]);
-        skip = true;
-        break;
+        aiString str;
+        mat->GetTexture(type, i, &str);
+
+        if (!str.length || str.C_Str()[0] == '\0')
+            continue;
+
+        string texFilename = str.C_Str();
+        
+
+        // Normalize slashes
+        for (char &c : texFilename) if (c == '\\') c = '/';
+
+        // Assimp sometimes chops the first 4 letters off
+        // Attempt to prepend directory if the file doesn't exist
+        string fullPath = directory + "/" + texFilename;
+
+        // Check if it exists manually
+        FILE* f = fopen(fullPath.c_str(), "rb");
+        if (!f)
+        {
+            fclose(f);
+            // naive fallback: assume first 4 letters were chopped off, prepend missing letters
+            size_t slashIndex = texFilename.find('/');
+            string guess = (slashIndex == string::npos) ? texFilename : texFilename.substr(slashIndex + 1);
+            fullPath = directory + "/" + guess;
+        }
+        else fclose(f);
+
+        // skip if already loaded
+        bool skip = false;
+        for (auto &t : textures_loaded)
+        {
+            if (t.path == fullPath) { textures.push_back(t); skip = true; break; }
+        }
+        if (skip) continue;
+
+        Texture texture;
+        texture.id = TextureFromFile(fullPath.c_str(), ""); // directory already prepended
+        texture.type = typeName;
+        texture.path = fullPath;
+
+        textures.push_back(texture);
+        textures_loaded.push_back(texture);
     }
+    return textures;
 }
 
-            if(!skip)
-            {   // if texture hasn't been loaded already, load it
-                Texture texture;
-                texture.id = TextureFromFile(str.C_Str(), this->directory);
-                texture.type = typeName;
-                texture.path = texPath;
-
-                textures.push_back(texture);
-                textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
-            }
-        }
-        return textures;
-    }
 };
 
 
